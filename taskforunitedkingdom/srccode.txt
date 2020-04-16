@@ -1,0 +1,148 @@
+clc;
+clear all;
+close all;
+
+N=100;
+dt=0.001;
+g=1;
+t=0:dt:1000;
+k=1;
+b=0.1;
+q=0.01;
+de=0.1;
+x=0:100;a=0;
+y=a*x+0.1;
+
+u=zeros(N,length(t));
+for jj=1:(N/2)
+     u(jj,1)=0;
+     for jj=51:N
+           u(jj,1)=1;
+     end 
+end
+
+for ii=2:length(t)
+    u(1,ii)=u(1,ii-1)+dt*(g*u(1,ii-1)*(u(1,ii-1)-b)*(1-u(1,ii-1)/k)+q*(u(2,ii-1)-u(1,ii-1)));
+    u(N,ii)=u(N,ii-1)+dt*(g*u(N,ii-1)*(u(N,ii-1)-b)*(1-u(N,ii-1)/k)+q*(u(N-1,ii-1)-u(N,ii-1)));
+    for jj=2:N-1
+    x1=u(jj,ii-1);
+    x0=u(jj-1,ii-1);
+    x2=u(jj+1,ii-1);
+    u(jj,ii)=x1+dt*(g*x1*(x1-b)*(1-x1/k)+q*(x2-x1)+q*(x0-x1));
+    u2=u(jj-1,ii);
+    u3=u(jj,ii);
+    end
+    
+    if t(ii)==0.1
+        u_1=u(:,ii);
+    end
+    if t(ii)==1
+        u_5=u(:,ii);
+    end
+    if t(ii)==50
+        u_10=u(:,ii);
+    end
+    if t(ii)==100
+        u_50=u(:,ii);
+    end
+    if t(ii)==500
+        u_100=u(:,ii);
+    end
+    if t(ii)==1000;
+        u_1000=u(:,ii);
+    end
+end
+
+    indexx = zeros(1,7);
+    subplot(3,2,1)
+        hold on
+    plot(x,y)
+    plot(u_1)
+   
+   index(1:2)= 0;
+for aa=1:100
+     if (u_1(aa)>0.0001)&&(u_1(aa)<0.9);
+        indexx(2) = aa; 
+     end
+ end
+  title('t=0.1')
+  plot(indexx(2),0.1,'o')
+
+    subplot(3,2,2)
+    hold on 
+    plot(u_5)
+      plot(x,y)
+     title('t=1')
+     for bb=1:100
+     if (u_1(bb)>0.00099)&&(u_1(bb)<0.9);
+        indexx(3) = bb; 
+     end
+     end
+      plot(indexx(3),0.1,'o')
+    
+    subplot(3,2,3)
+    hold on 
+    plot(u_10)
+      plot(x,y)
+     title('t=50')
+         
+for cc=1:100
+     if (u_10(cc)>0.023)&&(u_10(cc)<0.9);
+        indexx(4) = cc; 
+     end     
+ end
+     plot(indexx(4),0.1,'o')
+    subplot(3,2,4)
+    hold on 
+    plot(u_50)
+      plot(x,y)
+     title('t=100')
+ for dd=1:100
+     if (u_50(dd)>0.1)&&(u_50(dd)<0.9);
+        indexx(5) = dd; 
+     end
+ end
+     plot(indexx(5),0.1,'o')
+    subplot(3,2,5)
+    hold on 
+    plot(u_100)
+      plot(x,y)
+     title('t=500')
+     for ee=1:100
+     if (u_100(ee)>0.1)&&(u_100(ee)<0.9);
+        indexx(6) = ee; 
+     end
+     end
+     plot(indexx(6),0.1,'o')
+    subplot(3,2,6)
+    hold on 
+    plot(u_1000)
+      plot(x,y)
+     title('t=1000')
+     for ff=1:100
+     if (u_1000(ff)>0.02)&&(u_1000(ff)<0.6);
+        indexx(7) = ff; 
+     end
+     end
+      plot(indexx(7),0.1,'o')
+figure(2)   
+xx = [-5,0.1,1,50,100,500,1000]
+plot(xx,indexx,'-o');grid on;
+sita=zeros(1,4);ff=zeros(1,4);
+sita(1)=atan((indexx(3)-indexx(4))/49);
+sita(2)=atan((indexx(4)-indexx(5))/50);
+sita(3)=atan((indexx(5)-indexx(6))/400);
+sita(4)=atan((indexx(6)-indexx(7))/500);
+ff=rad2deg(sita);
+
+
+ 
+
+
+
+
+
+
+
+
+
